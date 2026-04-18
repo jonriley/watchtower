@@ -1,0 +1,67 @@
+{
+  "name": "watchtower",
+  "version": "1.0.0",
+  "author": "Watchtower contributors",
+  "description": "Watchtower — watch a folder and upload new files to Are.na via the arena CLI",
+  "type": "module",
+  "main": "dist/main/index.js",
+  "scripts": {
+    "build": "node scripts/ensure-icons.mjs && tsc -p tsconfig.main.json && tsc -p tsconfig.preload.json && tsc -p tsconfig.renderer.json && node scripts/copy-static.mjs",
+    "start": "npm run build && electron .",
+    "dev": "npm run build && electron .",
+    "typecheck": "tsc -p tsconfig.main.json && tsc -p tsconfig.preload.json && tsc -p tsconfig.renderer.json",
+    "pack:mac": "npm run build && electron-builder --mac",
+    "pack:dmg": "npm run pack:mac",
+    "icons": "python3 scripts/gen-panopticon-assets.py"
+  },
+  "build": {
+    "appId": "are.na.watchtower",
+    "productName": "Watchtower",
+    "icon": "assets/icon.png",
+    "copyright": "Copyright © contributors",
+    "artifactName": "${productName}-${version}-${os}.${ext}",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "package.json"
+    ],
+    "asar": true,
+    "mac": {
+      "category": "public.app-category.utilities",
+      "icon": "assets/icon.png",
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "extendInfo": {
+        "CFBundleName": "Watchtower",
+        "CFBundleDisplayName": "Watchtower",
+        "CFBundleDevelopmentRegion": "en",
+        "CFBundleAllowMixedLocalizations": false
+      }
+    },
+    "dmg": {
+      "title": "Watchtower ${version}",
+      "iconSize": 100,
+      "window": {
+        "width": 540,
+        "height": 380
+      }
+    }
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "chokidar": "^4.0.3",
+    "electron-store": "^10.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "electron": "^33.2.0",
+    "electron-builder": "^25.1.8",
+    "typescript": "^5.7.2"
+  }
+}

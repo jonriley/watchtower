@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en" data-theme="system">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self' https://www.are.na"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Watchtower Preferences</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="wrap prefs-wrap">
+      <header class="header prefs-header">
+        <div class="header-top">
+          <div>
+            <img
+              class="prefs-logo"
+              src="./watchtower-mark.svg"
+              width="48"
+              height="48"
+              alt=""
+            />
+            <h1 data-i18n="preferencesTitle">Preferences</h1>
+            <p class="lede prefs-lede" data-i18n="lede">
+              Watch folder, appearance, startup at login, and Trash prompts.
+            </p>
+          </div>
+          <div class="prefs-controls">
+            <label class="theme-field">
+              <span data-i18n="appearance">Appearance</span>
+              <select id="theme">
+                <option value="system">System</option>
+                <option value="light">Light</option>
+                <option value="dark">Dark</option>
+              </select>
+            </label>
+            <label class="theme-field">
+              <span data-i18n="language">Language</span>
+              <select id="uiLocale">
+                <option value="en">English</option>
+                <option value="es">Español</option>
+                <option value="zh">中文（简体）</option>
+                <option value="ar">العربية</option>
+                <option value="fr">Français</option>
+                <option value="ja">日本語</option>
+                <option value="sv">Svenska</option>
+                <option value="is">Íslenska</option>
+                <option value="de">Deutsch</option>
+                <option value="ru">Русский</option>
+                <option value="it">Italiano</option>
+              </select>
+            </label>
+          </div>
+        </div>
+      </header>
+
+      <section class="card">
+        <h2 data-i18n="general">General</h2>
+        <label class="check">
+          <input id="openAtLogin" type="checkbox" />
+          <span data-i18n="openAtLogin">Open Watchtower at login</span>
+        </label>
+        <p class="hint general-hint" data-i18n="loginHint">
+          Toggle below and/or add Watchtower in System Settings → General →
+          Login Items (macOS) or Startup apps (Windows).
+        </p>
+        <button type="button" id="openLoginItems" class="open-login-items" data-i18n="openLoginMac">
+          Open System Settings — Login Items…
+        </button>
+        <label class="check">
+          <input id="offerTrashAfterUpload" type="checkbox" />
+          <span data-i18n="offerTrash">After a successful upload, ask to move the file to Trash</span>
+        </label>
+      </section>
+
+      <section class="card">
+        <h2 data-i18n="watchFolder">Watch folder</h2>
+        <div class="row">
+          <input
+            id="watchPath"
+            type="text"
+            readonly
+            placeholder="No folder selected"
+          />
+          <button id="pickFolder" type="button" data-i18n="choose">Choose…</button>
+        </div>
+        <label class="check">
+          <input id="recursive" type="checkbox" />
+          <span data-i18n="recursive">Include subfolders (recursive)</span>
+        </label>
+      </section>
+
+      <section class="card actions">
+        <button id="save" type="button" class="primary" data-i18n="save">Save settings</button>
+        <span id="status" class="status" aria-live="polite"></span>
+      </section>
+    </main>
+    <script type="module" src="./preferences.js"></script>
+  </body>
+</html>

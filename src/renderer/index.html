@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en" data-theme="system">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self' https://www.are.na"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Watchtower</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="wrap">
+      <header class="header-hero">
+        <div class="hero-toolbar">
+          <button type="button" id="helpBtn" class="btn-inline">Help</button>
+        </div>
+        <div class="hero-brand">
+          <img
+            class="hero-logo"
+            src="./watchtower-mark.svg"
+            width="76"
+            height="76"
+            alt=""
+          />
+          <h1 class="hero-title">Watchtower</h1>
+        </div>
+      </header>
+
+      <dialog id="helpDialog" class="help-dialog" aria-labelledby="helpDialogTitle">
+        <div class="help-dialog-inner">
+          <h2 id="helpDialogTitle" class="help-dialog-title">Watchtower — quick help</h2>
+          <ul class="help-list">
+            <li>
+              <strong>Are.na channel</strong> — Pick where new files go. Use
+              <strong>Refresh</strong> after <code>arena login</code>. You can
+              <strong>Create channel</strong> here; when it succeeds, that channel
+              becomes the upload target.
+            </li>
+            <li>
+              <strong>CLI</strong> — Run <code>arena</code> commands (read-only
+              flow, same idea as Terminal). Output appears in the box below;
+              Use <strong>clear</strong> next to the CLI heading.
+            </li>
+            <li>
+              <strong>Watcher</strong> — In <strong>Preferences</strong>
+              (<strong>⌘,</strong> on Mac or <strong>File → Preferences</strong>),
+              choose a watch folder (and options). Then use
+              <strong>Start watcher</strong> / <strong>Stop watcher</strong> here.
+              New files in that folder upload to the selected channel via
+              <code>arena</code>.
+            </li>
+            <li>
+              <strong>Activity</strong> — Log of uploads, paths, and errors.
+              Use <strong>clear</strong> next to the Activity heading.
+            </li>
+            <li>
+              <strong>Check login (whoami)</strong> — Confirms the CLI sees your
+              Are.na account.
+            </li>
+          </ul>
+          <p class="help-foot hint">
+            Preferences also set theme, open at login, Trash-after-upload
+            prompts, and language.
+          </p>
+          <div class="help-actions">
+            <button type="button" id="helpClose">Close</button>
+          </div>
+        </div>
+      </dialog>
+
+      <section class="card">
+        <div class="card-head">
+          <h2>Are.na channel</h2>
+          <button
+            id="refreshChannels"
+            type="button"
+            class="btn-icon"
+            title="Refresh channel list"
+            aria-label="Refresh channel list"
+          >
+            <svg
+              class="ic"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" />
+              <path d="M21 3v5h-5" />
+              <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
+              <path d="M8 16H3v5" />
+            </svg>
+          </button>
+        </div>
+        <div class="channel-row">
+          <label class="field channel-select-field">
+            Upload channel
+            <select id="channelSelect" aria-label="Are.na channel"></select>
+          </label>
+        </div>
+        <p class="hint channel-hint">
+          Default <code>clutter</code>. List needs <code>arena login</code>.
+        </p>
+        <div class="row gap wrap-row">
+          <label class="field inline">
+            New channel title
+            <input id="newChannelTitle" type="text" value="clutter" />
+          </label>
+          <label class="field inline">
+            Visibility
+            <select id="newChannelVisibility">
+              <option value="private" selected>private</option>
+              <option value="public">public</option>
+              <option value="closed">closed</option>
+            </select>
+          </label>
+          <button id="createChannel" type="button">Create channel</button>
+        </div>
+        <p class="hint">
+          Creating a channel saves its slug as the upload target when creation
+          succeeds.
+        </p>
+      </section>
+
+      <section class="card">
+        <div class="card-head">
+          <h2>CLI</h2>
+          <button
+            id="cliClear"
+            type="button"
+            class="btn-inline"
+            title="Clear CLI output"
+            aria-label="Clear CLI output"
+          >
+            clear
+          </button>
+        </div>
+        <p class="hint cli-hint">
+          <code>arena</code> commands only. Same as Terminal.
+        </p>
+        <div class="cli-bar">
+          <input
+            id="cliInput"
+            type="text"
+            spellcheck="false"
+            autocomplete="off"
+            placeholder="arena whoami"
+            aria-label="arena CLI command"
+          />
+          <div class="cli-actions">
+            <button id="cliRun" type="button">Run</button>
+          </div>
+        </div>
+        <pre id="cliOutput" class="cli-output" aria-live="polite"></pre>
+      </section>
+
+      <section class="card actions">
+        <button id="whoami" type="button">Check login (whoami)</button>
+        <button id="start" type="button">Start watcher</button>
+        <button id="stop" type="button">Stop watcher</button>
+        <span id="status" class="status" aria-live="polite"></span>
+      </section>
+
+      <section class="card">
+        <div class="card-head">
+          <h2>Activity</h2>
+          <button
+            id="clearLog"
+            type="button"
+            class="btn-inline"
+            title="Clear activity"
+            aria-label="Clear activity"
+          >
+            clear
+          </button>
+        </div>
+        <ul id="log" class="log"></ul>
+      </section>
+    </main>
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>
